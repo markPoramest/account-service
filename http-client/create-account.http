@@ -1,0 +1,9 @@
+POST http://localhost:8080/account HTTP/2
+content-type: application/json
+
+{
+  "first_name" : "Supawish",
+  "last_name" : "Kaewjing",
+  "email" : "supawish@gmail.com",
+  "id_card_no" : "1100753254775"
+}
