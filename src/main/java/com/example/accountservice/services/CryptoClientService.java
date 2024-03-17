@@ -1,6 +1,6 @@
 package com.example.accountservice.services;
 
-import com.example.accountservice.dto.IdCardDTO;
+import com.example.accountservice.dto.IdCard;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -19,26 +19,26 @@ public class CryptoClientService {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
-    public String encryptIdCard(IdCardDTO idCardData) {
+    public String encryptIdCard(IdCard idCardData) {
         String url = baseUrl + "/id-card/encrypt";
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
-        HttpEntity<IdCardDTO> entity = new HttpEntity<>(idCardData, headers);
+        HttpEntity<IdCard> entity = new HttpEntity<>(idCardData, headers);
 
-        IdCardDTO res =  restTemplate.exchange(
-                url, HttpMethod.POST, entity, IdCardDTO.class).getBody();
+        IdCard res =  restTemplate.exchange(
+                url, HttpMethod.POST, entity, IdCard.class).getBody();
 
         return res.getIdCardNo();
     }
 
-    public String decryptIdCard(IdCardDTO idCardData) {
+    public String decryptIdCard(IdCard idCardData) {
         String url = baseUrl + "/id-card/decrypt";
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-        HttpEntity<IdCardDTO> entity = new HttpEntity<IdCardDTO>(idCardData, headers);
+        HttpEntity<IdCard> entity = new HttpEntity<IdCard>(idCardData, headers);
 
-        IdCardDTO res =  restTemplate.exchange(
-                url, HttpMethod.POST, entity, IdCardDTO.class).getBody();
+        IdCard res =  restTemplate.exchange(
+                url, HttpMethod.POST, entity, IdCard.class).getBody();
 
         return res.getIdCardNo();
     }

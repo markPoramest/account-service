@@ -1,6 +1,6 @@
 package com.example.accountservice.controllers;
 
-import com.example.accountservice.dto.AccountDTO;
+import com.example.accountservice.dto.AccountInput;
 import com.example.accountservice.models.Account;
 import com.example.accountservice.services.AccountService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -19,7 +19,7 @@ public class AccountController {
     private AccountService accountService;
 
     @PostMapping()
-    public ResponseEntity<Account> createAccount(@Valid @RequestBody AccountDTO req) throws JsonProcessingException {
+    public ResponseEntity<Account> createAccount(@Valid @RequestBody AccountInput req) throws JsonProcessingException {
         Account account = accountService.createAccount(req);
 
         return new ResponseEntity<>(account, HttpStatus.CREATED);

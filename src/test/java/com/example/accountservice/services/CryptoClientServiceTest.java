@@ -1,6 +1,6 @@
 package com.example.accountservice.services;
 
-import com.example.accountservice.dto.IdCardDTO;
+import com.example.accountservice.dto.IdCard;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -37,32 +37,32 @@ class CryptoClientServiceTest {
 
     @Test
     void testEncryptIdCard_whenSuccess_shouldReturnEncryptedId() throws Exception {
-        IdCardDTO idCardDTO = new IdCardDTO("1234567890");
-        IdCardDTO expectedResponse = new IdCardDTO("encryptedId");
+        IdCard idCard = new IdCard("1234567890");
+        IdCard expectedResponse = new IdCard("encryptedId");
 
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
-        HttpEntity<IdCardDTO> entity = new HttpEntity<>(idCardDTO, headers);
+        HttpEntity<IdCard> entity = new HttpEntity<>(idCard, headers);
 
-        when(restTemplate.exchange("http://mock-crypto-service/id-card/encrypt", HttpMethod.POST, entity, IdCardDTO.class)).thenReturn(new ResponseEntity<>(expectedResponse, HttpStatus.OK));
+        when(restTemplate.exchange("http://mock-crypto-service/id-card/encrypt", HttpMethod.POST, entity, IdCard.class)).thenReturn(new ResponseEntity<>(expectedResponse, HttpStatus.OK));
 
-        String encryptedId = cryptoClientService.encryptIdCard(idCardDTO);
+        String encryptedId = cryptoClientService.encryptIdCard(idCard);
 
         assert encryptedId.equals(expectedResponse.getIdCardNo());
     }
 
     @Test
     void testDecryptIdCard_whenSuccess_shouldReturnDecryptedId() throws Exception {
-        IdCardDTO idCardDTO = new IdCardDTO("encryptedId");
-        IdCardDTO expectedResponse = new IdCardDTO("1234567890");
+        IdCard idCard = new IdCard("encryptedId");
+        IdCard expectedResponse = new IdCard("1234567890");
 
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
-        HttpEntity<IdCardDTO> entity = new HttpEntity<>(idCardDTO, headers);
+        HttpEntity<IdCard> entity = new HttpEntity<>(idCard, headers);
 
-        when(restTemplate.exchange("http://mock-crypto-service/id-card/decrypt", HttpMethod.POST, entity, IdCardDTO.class)).thenReturn(new ResponseEntity<>(expectedResponse, HttpStatus.OK));
+        when(restTemplate.exchange("http://mock-crypto-service/id-card/decrypt", HttpMethod.POST, entity, IdCard.class)).thenReturn(new ResponseEntity<>(expectedResponse, HttpStatus.OK));
 
-        String decryptedId = cryptoClientService.decryptIdCard(idCardDTO);
+        String decryptedId = cryptoClientService.decryptIdCard(idCard);
 
         assert decryptedId.equals(expectedResponse.getIdCardNo());
     }

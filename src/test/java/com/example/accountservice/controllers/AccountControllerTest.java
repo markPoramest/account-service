@@ -1,6 +1,6 @@
 package com.example.accountservice.controllers;
 
-import com.example.accountservice.dto.AccountDTO;
+import com.example.accountservice.dto.AccountInput;
 import com.example.accountservice.models.Account;
 import com.example.accountservice.services.AccountService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -43,7 +43,7 @@ class AccountControllerTest {
 
     @Test
     void testCreateAccount_whenCreateSuccess_shouldReturnCreated() throws Exception {
-        AccountDTO accountDTO = AccountDTO.builder()
+        AccountInput accountInput = AccountInput.builder()
                 .firstName("Firstname")
                 .lastName("Lastname")
                 .email("email@gmail.com")
@@ -53,18 +53,18 @@ class AccountControllerTest {
 
         Account mockAccount = Account.builder()
                 .id(1L)
-                .firstName(accountDTO.getFirstName())
-                .lastName(accountDTO.getLastName())
-                .email(accountDTO.getEmail())
-                .idCardNo(accountDTO.getIdCardNo())
-                .dateOfBirth(Date.valueOf(accountDTO.getDateOfBirth()))
+                .firstName(accountInput.getFirstName())
+                .lastName(accountInput.getLastName())
+                .email(accountInput.getEmail())
+                .idCardNo(accountInput.getIdCardNo())
+                .dateOfBirth(Date.valueOf(accountInput.getDateOfBirth()))
                 .build();
 
-        given(accountService.createAccount(accountDTO)).willReturn(mockAccount);
+        given(accountService.createAccount(accountInput)).willReturn(mockAccount);
 
         ResultActions result = mockMvc.perform(post("/account")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(accountDTO)));
+                .content(objectMapper.writeValueAsString(accountInput)));
 
         result.andExpect(MockMvcResultMatchers.status().isCreated());
         result.andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(mockAccount)));
@@ -72,7 +72,7 @@ class AccountControllerTest {
 
     @Test
     void testCreateAccount_WhenRequestInvalid_ShouldReturnBadRequest() throws Exception {
-        AccountDTO accountDTO = AccountDTO.builder()
+        AccountInput accountInput = AccountInput.builder()
                 .firstName("Firstname")
                 .email("email@gmail.com")
                 .idCardNo("idCardNo")
@@ -81,7 +81,7 @@ class AccountControllerTest {
 
         ResultActions result = mockMvc.perform(post("/account")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(accountDTO)));
+                .content(objectMapper.writeValueAsString(accountInput)));
 
         result.andExpect(MockMvcResultMatchers.status().isBadRequest());
         result.andExpect(MockMvcResultMatchers.content().json("{'message':'Last name cannot be null'}"));

@@ -1,7 +1,7 @@
 package com.example.accountservice.services;
 
-import com.example.accountservice.dto.AccountDTO;
-import com.example.accountservice.dto.IdCardDTO;
+import com.example.accountservice.dto.AccountInput;
+import com.example.accountservice.dto.IdCard;
 import com.example.accountservice.models.Account;
 import com.example.accountservice.repositories.AccountRepository;
 import lombok.AllArgsConstructor;
@@ -16,9 +16,9 @@ public class AccountService {
     private AccountRepository accountRepository;
     private CryptoClientService cryptoClientService;
 
-    public Account createAccount(AccountDTO req) {
+    public Account createAccount(AccountInput req) {
 
-        IdCardDTO idCardDTO = new IdCardDTO(req.getIdCardNo());
+        IdCard idCardDTO = new IdCard(req.getIdCardNo());
         String idCard = cryptoClientService.encryptIdCard(idCardDTO);
         Account account = Account.builder()
                 .firstName(req.getFirstName())
@@ -36,7 +36,7 @@ public class AccountService {
 
     public Account getAccount(Long id) {
         Account account = accountRepository.findById(id).get();
-        IdCardDTO idCardDTO = new IdCardDTO(account.getIdCardNo());
+        IdCard idCardDTO = new IdCard(account.getIdCardNo());
         String idCard = cryptoClientService.decryptIdCard(idCardDTO);
         account.setIdCardNo(idCard);
 

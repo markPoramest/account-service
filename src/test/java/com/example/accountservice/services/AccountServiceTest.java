@@ -1,7 +1,7 @@
 package com.example.accountservice.services;
 
-import com.example.accountservice.dto.AccountDTO;
-import com.example.accountservice.dto.IdCardDTO;
+import com.example.accountservice.dto.AccountInput;
+import com.example.accountservice.dto.IdCard;
 import com.example.accountservice.models.Account;
 import com.example.accountservice.repositories.AccountRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,7 +39,7 @@ class AccountServiceTest {
 
     @Test
     void testCreateAccount_whenSuccess_shouldReturnAccount() {
-        AccountDTO accountDTO = AccountDTO.builder()
+        AccountInput accountInput = AccountInput.builder()
                 .firstName("Firstname")
                 .lastName("Lastname")
                 .email("email@gmail.com")
@@ -47,20 +47,20 @@ class AccountServiceTest {
                 .dateOfBirth("2000-01-01")
                 .build();
 
-        IdCardDTO idCardDTO = new IdCardDTO(accountDTO.getIdCardNo());
+        IdCard idCard = new IdCard(accountInput.getIdCardNo());
 
         Account account = Account.builder()
-                .firstName(accountDTO.getFirstName())
-                .lastName(accountDTO.getLastName())
-                .email(accountDTO.getEmail())
-                .dateOfBirth(Date.valueOf(accountDTO.getDateOfBirth()))
+                .firstName(accountInput.getFirstName())
+                .lastName(accountInput.getLastName())
+                .email(accountInput.getEmail())
+                .dateOfBirth(Date.valueOf(accountInput.getDateOfBirth()))
                 .idCardNo("encryptedId")
                 .build();
 
-        when(cryptoClientService.encryptIdCard(idCardDTO)).thenReturn("encryptedId");
+        when(cryptoClientService.encryptIdCard(idCard)).thenReturn("encryptedId");
         when(accountRepository.save(account)).thenReturn(Account.builder().id(1L).build());
 
-        Account createdAccount = accountService.createAccount(accountDTO);
+        Account createdAccount = accountService.createAccount(accountInput);
 
         assert createdAccount.getId() == 1L;
     }
@@ -70,7 +70,7 @@ class AccountServiceTest {
         Account account = Account.builder().id(1L).idCardNo("encryptedId").build();
 
         when(accountRepository.findById(1L)).thenReturn(java.util.Optional.of(account));
-        when(cryptoClientService.decryptIdCard(new IdCardDTO("encryptedId"))).thenReturn("1234567890987");
+        when(cryptoClientService.decryptIdCard(new IdCard("encryptedId"))).thenReturn("1234567890987");
 
         Account ac = accountService.getAccount(1L);
 

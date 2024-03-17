@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 @Builder
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class AccountDTO  {
+public class AccountInput {
     @NotBlank(message = "First name cannot be null")
     private String firstName;
     @NotBlank(message = "Last name cannot be null")
