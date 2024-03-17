@@ -5,6 +5,8 @@ import com.example.accountservice.dto.IdCard;
 import com.example.accountservice.models.Account;
 import com.example.accountservice.repositories.AccountRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
@@ -32,6 +34,10 @@ public class AccountService {
 
     public List<Account> getAccounts() {
         return accountRepository.findAll();
+    }
+
+    public Page<Account> getByFirstNameStartWith(String firstName, Pageable page) {
+        return accountRepository.findByFirstNameStartsWith(firstName, page);
     }
 
     public Account getAccount(Long id) {

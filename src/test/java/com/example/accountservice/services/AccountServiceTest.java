@@ -11,9 +11,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.sql.Date;
+import java.util.List;
 
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -62,6 +68,8 @@ class AccountServiceTest {
 
         Account createdAccount = accountService.createAccount(accountInput);
 
+        verify(accountRepository, Mockito.times(1)).save(account);
+        verify(cryptoClientService, Mockito.times(1)).encryptIdCard(idCard);
         assert createdAccount.getId() == 1L;
     }
 
@@ -74,8 +82,40 @@ class AccountServiceTest {
 
         Account ac = accountService.getAccount(1L);
 
+
+        verify(accountRepository, Mockito.times(1)).findById(1L);
+        verify(cryptoClientService, Mockito.times(1)).decryptIdCard(new IdCard("encryptedId"));
         assert ac.getId() == 1L;
         assert ac.getIdCardNo().equals("1234567890987");
+    }
 
+    @Test
+    void testGetAccounts_whenSuccess_shouldReturnAccounts() {
+        when(accountRepository.findAll()).thenReturn(List.of(Account.builder().id(1L).build()));
+
+        List<Account> accounts = accountService.getAccounts();
+
+        verify(accountRepository, Mockito.times(1)).findAll();
+        assert accounts.get(0).getId() == 1L;
+    }
+
+    @Test
+    void testGetAccountsByFirstName_whenSuccess_shouldReturnAccounts() {
+        Pageable page = PageRequest.of(2, 3);
+
+        Page<Account> mockAccounts = new PageImpl<>(List.of(Account.builder().id(1L)
+                .firstName("S")
+                .lastName("S")
+                .email("S")
+                .idCardNo("S")
+                .dateOfBirth(Date.valueOf("2023-12-12"))
+                .build()));
+
+        when(accountRepository.findByFirstNameStartsWith("S",page)).thenReturn(mockAccounts);
+
+        Page<Account> accounts = accountService.getByFirstNameStartWith("S", page);
+
+        assert accounts.getContent().get(0).getId() == 1L;
+        verify(accountRepository, Mockito.times(1)).findByFirstNameStartsWith("S", page);
     }
 }

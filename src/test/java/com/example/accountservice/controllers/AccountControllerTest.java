@@ -12,6 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -108,6 +112,27 @@ class AccountControllerTest {
         result.andExpect(MockMvcResultMatchers.status().isOk());
         result.andExpect(MockMvcResultMatchers.content().json("{'id':1}"));
 
+    }
+
+    @Test
+    void testGetAccountsByFirstNameStartWith_whenGetSuccess_shouldReturnOk() throws Exception {
+        Pageable page = PageRequest.of(2, 3);
+
+        Page<Account> mockAccounts = new PageImpl<>(List.of(Account.builder().id(1L)
+                .firstName("S")
+                .lastName("S")
+                .email("S")
+                .idCardNo("S")
+                .dateOfBirth(Date.valueOf("2023-12-12"))
+                .build()));
+
+        given(accountService.getByFirstNameStartWith("S", page)).willReturn(mockAccounts);
+
+        ResultActions result = mockMvc.perform(get("/account/search?firstName=S&page=2&size=3")
+                .contentType(MediaType.APPLICATION_JSON));
+
+        result.andExpect(MockMvcResultMatchers.status().isOk());
+        result.andExpect(MockMvcResultMatchers.content().json("{\"content\":[{\"id\":1,\"firstName\":\"S\",\"lastName\":\"S\",\"email\":\"S\",\"dateOfBirth\":\"2023-12-12\",\"idCardNo\":\"S\"}],\"pageable\":\"INSTANCE\",\"last\":true,\"totalPages\":1,\"totalElements\":1,\"first\":true,\"numberOfElements\":1,\"size\":1,\"number\":0,\"sort\":{\"sorted\":false,\"unsorted\":true,\"empty\":true},\"empty\":false}"));
     }
 }
 
