@@ -14,7 +14,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -49,7 +48,7 @@ class CryptoClientServiceTest {
 
         String encryptedId = cryptoClientService.encryptIdCard(idCardDTO);
 
-        assertEquals(expectedResponse.getIdCardNo(), encryptedId);
+        assert encryptedId.equals(expectedResponse.getIdCardNo());
     }
 
     @Test
@@ -65,6 +64,6 @@ class CryptoClientServiceTest {
 
         String decryptedId = cryptoClientService.decryptIdCard(idCardDTO);
 
-        assertEquals(expectedResponse.getIdCardNo(), decryptedId);
+        assert decryptedId.equals(expectedResponse.getIdCardNo());
     }
 }
