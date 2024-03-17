@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.sql.Date;
 import java.util.List;
 
 import static org.mockito.BDDMockito.given;
@@ -41,12 +42,13 @@ class AccountControllerTest {
 
 
     @Test
-    void TestCreateAccount_WhenCreateSuccess_ShouldReturnCreated() throws Exception {
+    void testCreateAccount_WhenCreateSuccess_ShouldReturnCreated() throws Exception {
         AccountDTO accountDTO = AccountDTO.builder()
                 .firstName("Firstname")
                 .lastName("Lastname")
                 .email("email@gmail.com")
                 .idCardNo("idCardNo")
+                .dateOfBirth("2023-12-12")
                 .build();
 
         Account mockAccount = Account.builder()
@@ -55,6 +57,7 @@ class AccountControllerTest {
                 .lastName(accountDTO.getLastName())
                 .email(accountDTO.getEmail())
                 .idCardNo(accountDTO.getIdCardNo())
+                .dateOfBirth(Date.valueOf(accountDTO.getDateOfBirth()))
                 .build();
 
         given(accountService.createAccount(accountDTO)).willReturn(mockAccount);
@@ -68,11 +71,12 @@ class AccountControllerTest {
     }
 
     @Test
-    void TestCreateAccount_WhenRequestInvalid_ShouldReturnBadRequest() throws Exception {
+    void testCreateAccount_WhenRequestInvalid_ShouldReturnBadRequest() throws Exception {
         AccountDTO accountDTO = AccountDTO.builder()
                 .firstName("Firstname")
                 .email("email@gmail.com")
                 .idCardNo("idCardNo")
+                .dateOfBirth("2023-12-12")
                 .build();
 
         ResultActions result = mockMvc.perform(post("/account")
@@ -84,7 +88,7 @@ class AccountControllerTest {
     }
 
     @Test
-    void TestGetAccounts_WhenGetSuccess_ShouldReturnOk() throws Exception {
+    void testGetAccounts_WhenGetSuccess_ShouldReturnOk() throws Exception {
         given(accountService.getAccounts()).willReturn(List.of(Account.builder().id(1L).build()));
 
         ResultActions result = mockMvc.perform(get("/account")
