@@ -42,7 +42,7 @@ class AccountControllerTest {
 
 
     @Test
-    void testCreateAccount_WhenCreateSuccess_ShouldReturnCreated() throws Exception {
+    void testCreateAccount_whenCreateSuccess_shouldReturnCreated() throws Exception {
         AccountDTO accountDTO = AccountDTO.builder()
                 .firstName("Firstname")
                 .lastName("Lastname")
@@ -88,7 +88,7 @@ class AccountControllerTest {
     }
 
     @Test
-    void testGetAccounts_WhenGetSuccess_ShouldReturnOk() throws Exception {
+    void testGetAccounts_whenGetSuccess_shouldReturnOk() throws Exception {
         given(accountService.getAccounts()).willReturn(List.of(Account.builder().id(1L).build()));
 
         ResultActions result = mockMvc.perform(get("/account")
@@ -99,7 +99,7 @@ class AccountControllerTest {
     }
 
     @Test
-    void TestGetAccountById_WhenGetSuccess_ShouldReturnOk() throws Exception {
+    void testGetAccountById_whenGetSuccess_shouldReturnOk() throws Exception {
         given(accountService.getAccount(1L)).willReturn(Account.builder().id(1L).build());
 
         ResultActions result = mockMvc.perform(get("/account/1")

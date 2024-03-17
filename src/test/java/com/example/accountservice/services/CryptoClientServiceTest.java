@@ -36,7 +36,7 @@ class CryptoClientServiceTest {
 
 
     @Test
-    void testEncryptIdCard_WhenSuccess_ShouldReturnEncryptedId() throws Exception {
+    void testEncryptIdCard_whenSuccess_shouldReturnEncryptedId() throws Exception {
         IdCardDTO idCardDTO = new IdCardDTO("1234567890");
         IdCardDTO expectedResponse = new IdCardDTO("encryptedId");
 
@@ -52,7 +52,7 @@ class CryptoClientServiceTest {
     }
 
     @Test
-    void testDecryptIdCard_WhenSuccess_ShouldReturnDecryptedId() throws Exception {
+    void testDecryptIdCard_whenSuccess_shouldReturnDecryptedId() throws Exception {
         IdCardDTO idCardDTO = new IdCardDTO("encryptedId");
         IdCardDTO expectedResponse = new IdCardDTO("1234567890");
 
