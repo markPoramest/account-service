@@ -14,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -48,6 +49,7 @@ class CryptoClientServiceTest {
 
         String encryptedId = cryptoClientService.encryptIdCard(idCard);
 
+        verify(restTemplate).exchange("http://mock-crypto-service/id-card/encrypt", HttpMethod.POST, entity, IdCard.class);
         assert encryptedId.equals(expectedResponse.getIdCardNo());
     }
 
@@ -64,6 +66,7 @@ class CryptoClientServiceTest {
 
         String decryptedId = cryptoClientService.decryptIdCard(idCard);
 
+        verify(restTemplate).exchange("http://mock-crypto-service/id-card/decrypt", HttpMethod.POST, entity, IdCard.class);
         assert decryptedId.equals(expectedResponse.getIdCardNo());
     }
 }
