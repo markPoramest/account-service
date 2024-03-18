@@ -5,20 +5,20 @@ This project is a Spring Boot application developed using Java 17, providing API
 ## APIs
 
 ### Create Account
-- Endpoint: `POST /`
+- Endpoint: `POST /account`
 - Description: This API creates a new account based on the provided account input. It sends a request to the crypto service for encrypting the ID card number using RestTemplate.
 - Request Body: AccountInput
 - Response: Account
 - HTTP Status: 201 Created
 
 ### Get All Accounts
-- Endpoint: `GET /`
+- Endpoint: `GET /account`
 - Description: Retrieves a list of all accounts.
 - Response: List of Account
 - HTTP Status: 200 OK
 
 ### Search Accounts by First Name
-- Endpoint: `GET /search`
+- Endpoint: `GET /account/search`
 - Description: Searches accounts by first name with pagination support.
 - Query Parameters:
     - firstName: First name to search for
@@ -27,7 +27,7 @@ This project is a Spring Boot application developed using Java 17, providing API
 - HTTP Status: 200 OK
 
 ### Get Account by ID
-- Endpoint: `GET /{id}`
+- Endpoint: `GET /account/{id}`
 - Description: Retrieves an account by its ID. It sends a request to the crypto service for decrypting the ID card number using RestTemplate.
 - Path Variable: id (Long)
 - Response: Account
