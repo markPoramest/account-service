@@ -2,9 +2,9 @@ POST http://localhost:8080/account HTTP/2
 content-type: application/json
 
 {
-  "first_name" : "Singha",
-  "last_name" : "Pattharasarnsophon",
-  "email" : "singha@gmail.com",
-  "id_card_no" : "1198196654775",
-  "date_of_birth" : "2001-3-4"
+  "first_name" : "Supachai",
+  "last_name" : "Pichaiwattanaporn",
+  "email" : "supachai123@gmail.com",
+  "id_card_no" : "1198196654328",
+  "date_of_birth" : "2002-10-7"
 }
